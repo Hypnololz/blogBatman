@@ -1,3 +1,4 @@
+{% set route = app.request.attributes.get('_route') %}
 <!doctype html>
 <html lang="fr">
 <head>
@@ -6,32 +7,65 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 {#FONT AWESOME#}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <title>{% block title %}{% endblock %}</title>
+    {# bloc pour ajouter des fichier css additionnels #}
+    {% block css %}{% endblock %}
+    {# TODO: Dynamiser le nom du site #}
+    <title>{% block title %}{% endblock %} - le blog de Batman</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+{# Navbar principale #}
+<nav class="navbar navbar-expand-lg navbar-dark bg-black main-navbar">
     <div class="container-fluid">
+
+        {# Logo et titre du site #}
+        <a class="navbar-brand" href="{{ path('main_home') }}">
+            {# TODO: dynamiser nom du site #}
+            <img src="{{ asset('img/embleme-batman.png') }}" alt="" class="img-fluid main-navbar-logo">Le Blog de Batman
+        </a>
+
+        {# Bouton burger #}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            {# Paquet des boutons de gauche #}
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    {% set route = app.request.attributes.get('_route') %}
                 <li class="nav-item">
-                    <a class="nav-link {{ route == 'home' ? 'active' }}" aria-current="page" href="{{ path('home') }}">Home</a>
+                    <a class="nav-link{{ route == 'main_home' ? ' active' }}" href="{{ path('main_home') }}"><i class="fas fa-home mx-1"></i>Accueil</a>
                 </li>
             </ul>
+
+            {# Paquet des boutons de droite #}
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-user-plus mx-1"></i>Inscription</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-sign-in-alt mx-1"></i>Connexion</a>
+                </li>
+            </ul>
+
+            {# Formulaire de recherche #}
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Trouver un article" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit"><i class="fas fa-search"></i></button>
+            </form>
         </div>
     </div>
 </nav>
-{% block body %}
 
-{% endblock %}
+{#bloc pour afficher le contenu des pages#}
+{% block body %}{% endblock %}
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+{#bloc pour js particulier#}
+{% block js %}{% endblock %}
 </body>
 </html>
 
