@@ -45,10 +45,10 @@
             {# Paquet des boutons de droite #}
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-user-plus mx-1"></i>Inscription</a>
+                    <a class="nav-link{{ route == 'app_register' ? ' active' }}" href="{{ path('app_register') }}"><i class="fas fa-user-plus mx-1"></i>Inscription</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-sign-in-alt mx-1"></i>Connexion</a>
+                    <a class="nav-link{{ route == 'app_login' ? ' active' }}" href="{{ path('app_login') }}"><i class="fas fa-sign-in-alt mx-1"></i>Connexion</a>
                 </li>
             </ul>
 
