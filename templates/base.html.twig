@@ -6,7 +6,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-{#FONT AWESOME#}
+    {# FONT AWESOME #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
 
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
@@ -28,7 +28,8 @@
         </a>
 
         {# Bouton burger #}
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -38,7 +39,18 @@
             {# Paquet des boutons de gauche #}
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link{{ route == 'main_home' ? ' active' }}" href="{{ path('main_home') }}"><i class="fas fa-home mx-1"></i>Accueil</a>
+                    <a class="nav-link{{ route == 'main_home' ? ' active' }}" href="{{ path('main_home') }}"><i
+                                class="fas fa-home mx-1"></i>Accueil</a>
+                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link {{ route == 'blog_article_create' ? ' active' }}"
+                           href="{{ path('blog_article_create') }}"><i class="fas fa-pen me-2"></i> créer un article</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link {{ route == 'article_list' ? ' active' }}" href="{{ path('article_list') }}"> <i class="fas fa-newspaper me-2"></i> liste
+                        des articles</a>
                 </li>
             </ul>
 
@@ -46,22 +58,30 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 {% if app.user %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-light" href="#" id="profil-dropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="profil-dropdown" role="button"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-user mx-1"></i>{{ app.user.pseudo }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="profil-dropdown">
+                            <a class="dropdown-item" href="{{ path('main_profil') }}"><i
+                                        class="fas fa-user me-1"></i>profile</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt mr-1"></i>Déconnexion</a>
+                            <a class="dropdown-item" href="{{ path('app_logout') }}"><i
+                                        class="fas fa-sign-out-alt me-1"></i>Déconnexion</a>
                         </div>
+
+
                     </li>
 
                 {% else %}
-                <li class="nav-item">
-                    <a class="nav-link{{ route == 'app_register' ? ' active' }}" href="{{ path('app_register') }}"><i class="fas fa-user-plus mx-1"></i>Inscription</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link{{ route == 'app_login' ? ' active' }}" href="{{ path('app_login') }}"><i class="fas fa-sign-in-alt mx-1"></i>Connexion</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ route == 'app_register' ? ' active' }}"
+                           href="{{ path('app_register') }}"><i class="fas fa-user-plus mx-1"></i>Inscription</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ route == 'app_login' ? ' active' }}" href="{{ path('app_login') }}"><i
+                                    class="fas fa-sign-in-alt mx-1"></i>Connexion</a>
+                    </li>
                 {% endif %}
             </ul>
 
@@ -74,22 +94,22 @@
     </div>
 </nav>
 {% if app.session.flashBag.has('success') %}
-<div class="container">
-    <div class="row">
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success alert-dismissible fade show text-center col-12 my-3" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
+    <div class="container">
+        <div class="row">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success alert-dismissible fade show text-center col-12 my-3" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
 
+        </div>
     </div>
-</div>
 {% endif %}
-{#bloc pour afficher le contenu des pages#}
+{# bloc pour afficher le contenu des pages #}
 {% block body %}{% endblock %}
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-{#bloc pour js particulier#}
+{# bloc pour js particulier #}
 {% block js %}{% endblock %}
 </body>
 </html>
