@@ -6,8 +6,8 @@
 {% block body %}
     <h1 class="text-center">liste des Article!</h1>
     <div class="container">
+            {% for article in liste %}
         <div class="row">
-            {% for article in liste|sort((a, b) => b.id <=> a.id) %}
                 <div class="col-12 my-3">
 
                     <div class="card">
@@ -22,8 +22,12 @@
                         </ul>
                     </div>
                 </div>
-            {% endfor %}
         </div>
+            {% else %}
+                <div class="row">
+                    <p>aucun article ajouté</p>
+                </div>
+            {% endfor %}
     </div>
 
 
