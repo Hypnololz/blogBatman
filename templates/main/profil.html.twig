@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}profile{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="mx-auto mt-5 card bg-black" style="width: 30rem;">
+                <img src="{{ asset('img/the-batman-robert-pattinson-matt-reeves.jpg') }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">profile de {{ app.user.pseudo }}</h5>
+                </div>
+                <ul class="list-group list-group-flush bg-black text-white">
+                    <li class="list-group-item bg-black text-white">email: <span class="text-info">{{ app.user.email }}</span></li>
+                    <li class="list-group-item bg-black text-white">date de creation du compte: <span class="text-info">{{ app.user.creationDate|date('d/m/Y à H\\hi') }}</span></li>
+                    <li class="list-group-item bg-black text-white">pseudo: <span class="text-info">{{ app.user.pseudo }}</span></li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="list-group-item bg-black text-white">role: <span class="text-info">administrateur</span></li>
+                    {% endif %}
+                    <li class="list-group-item bg-black text-white"><a class="text-white" href="{{ path('app_logout') }}">Deconnexion</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+

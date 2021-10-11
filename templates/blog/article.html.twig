@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="mx-auto col-12 col-md-6"><h1>{{ article.title }}</h1></div>
+
+        </div>
+    <div class="row">
+        <p class="mt-5 col-12 col-md-6 mx-auto">{{ article.content|raw|purify}}</p>
+        <p class="text-end">écrits le {{ article.publicationDate|date('d/m/Y à H\\hi')}} par {{ article.user.pseudo }}</p>
+    </div>
+
+
+    <h2 class="text-center">commentaire!</h2>
+        {% if is_granted('ROLE_USER') %}
+
+        {{ form(form)}}
+        {% endif %}
+        <div class="row">
+            {% for comment in article.comments|sort((a, b) => b.id <=> a.id) %}
+                <div class="col-12 my-3">
+
+                    <div class="card">
+                        <div class="card-header bg-secondary text-black">
+                            {{ comment.user.pseudo }}
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-black text-white">{{ comment.content }}
+                            </li>
+                            <li class="list-group-item bg-secondary text-black">le {{ comment.publicationDate|date('d/m/Y à H\\hi') }}</li>
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+
