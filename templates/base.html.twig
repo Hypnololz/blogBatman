@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     {# bloc pour ajouter des fichier css additionnels #}
     {% block css %}{% endblock %}
-    {# TODO: Dynamiser le nom du site #}
     <title>{% block title %}{% endblock %} - le blog de Batman</title>
 </head>
 <body>
@@ -23,7 +22,6 @@
 
         {# Logo et titre du site #}
         <a class="navbar-brand" href="{{ path('main_home') }}">
-            {# TODO: dynamiser nom du site #}
             <img src="{{ asset('img/embleme-batman.png') }}" alt="" class="img-fluid main-navbar-logo">Le Blog de Batman
         </a>
 
@@ -49,7 +47,7 @@
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link {{ route == 'article_list' ? ' active' }}" href="{{ path('article_list') }}"> <i class="fas fa-newspaper me-2"></i> liste
+                    <a class="nav-link {{ route == 'article_list' ? ' active' }}" href="{{ path('blog_article_list') }}"> <i class="fas fa-newspaper me-2"></i> liste
                         des articles</a>
                 </li>
             </ul>
