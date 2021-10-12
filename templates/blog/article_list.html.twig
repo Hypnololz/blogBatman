@@ -16,8 +16,8 @@
             </div>
 
         {% endif %}
-            {% for article in liste %}
-        <div class="row">
+        {% for article in liste %}
+            <div class="row">
                 <div class="col-12 my-3">
 
                     <div class="card">
@@ -26,18 +26,25 @@
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item bg-black text-white">{{ article.content|striptags|excerpt(20) }}
-                                <a href="{{path( 'blog_article',{'slug':article.slug} )}}">voir plus</a>
+                                <a href="{{ path( 'blog_article',{'slug':article.slug} ) }}">voir plus</a>
                             </li>
-                            <li class="list-group-item bg-secondary text-black">ecrit par {{ article.user.pseudo }} le {{ article.publicationDate|date('d/m/Y à H\\hi') }}</li>
+                            <li class="list-group-item bg-secondary text-black">ecrit par {{ article.user.pseudo }}
+                                le {{ article.publicationDate|date('d/m/Y à H\\hi') }}</li>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <p class="mb-0 mt-3 bg-black">
+                                    <a class="text-decoration-none" href="{{ path('blog_articledelete', {'id': article.id, 'csrf_token' : csrf_token('article_delete_'~article.id)}) }}">suprimer</a>
+                                </p>
+
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
-        </div>
-            {% else %}
-                <div class="row">
-                    <p>aucun article ajouté</p>
-                </div>
-            {% endfor %}
+            </div>
+        {% else %}
+            <div class="row">
+                <p>aucun article ajouté</p>
+            </div>
+        {% endfor %}
     </div>
     {% if liste is not empty %}
         <div class="row">

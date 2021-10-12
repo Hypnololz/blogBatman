@@ -29,24 +29,24 @@ class BlogController extends AbstractController
     public function articleCreation(Request $request): Response
     {
         $newArticle = new Article();
-        $form = $this->createForm(CreateArticleFormType::class,$newArticle);
+        $form = $this->createForm(CreateArticleFormType::class, $newArticle);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $newArticle
                 ->setUser($this->getUser())
-                ->setPublicationDate(new DateTime())
-            ;
+                ->setPublicationDate(new DateTime());
             $em = $this->getDoctrine()->getManager();
             $em->persist($newArticle);
             $em->flush();
-            $this->addFlash('success','article ajouter avec succés');
+            $this->addFlash('success', 'article ajouter avec succés');
             return $this->redirectToRoute('main_home');
 
         }
-        return $this->render('blog/article_create.html.twig',[
+        return $this->render('blog/article_create.html.twig', [
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * controller de la page de creation d'article
      *
@@ -54,9 +54,9 @@ class BlogController extends AbstractController
      */
     public function articleList(Request $request, PaginatorInterface $paginator): Response
     {
-        $requestedPage = $request->query->getInt('page',1);
+        $requestedPage = $request->query->getInt('page', 1);
 
-        if ($requestedPage< 1){
+        if ($requestedPage < 1) {
             throw new NotFoundHttpException();
         }
         $em = $this->getDoctrine()->getManager();
@@ -69,8 +69,8 @@ class BlogController extends AbstractController
             10
         );
 
-        return $this->render('blog/article_list.html.twig',[
-            'liste'=> $articleList
+        return $this->render('blog/article_list.html.twig', [
+            'liste' => $articleList
         ]);
     }
 
@@ -79,14 +79,14 @@ class BlogController extends AbstractController
      *
      * @Route("/article/{slug}", name="article")
      */
-    public function article(Article $article,Request $request): Response
+    public function article(Article $article, Request $request): Response
     {
         $newComment = new Comment();
         $newComment->setUser($this->getUser());
         $newComment->setPublicationDate(new \DateTime());
         $newComment->setArticle($article);
 
-        $form = $this->createForm(CreateCommentFormType::class,$newComment);
+        $form = $this->createForm(CreateCommentFormType::class, $newComment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -96,10 +96,10 @@ class BlogController extends AbstractController
             unset($newComment);
             unset($form);
             $newComment = new Comment();
-            $form = $this->createForm(CreateCommentFormType::class,$newComment);
+            $form = $this->createForm(CreateCommentFormType::class, $newComment);
         }
 
-        return $this->render('blog/article.html.twig',[
+        return $this->render('blog/article.html.twig', [
             'form' => $form->createView(),
             'article' => $article,
         ]);
@@ -110,17 +110,17 @@ class BlogController extends AbstractController
      *
      * @Route("/liste-des-article-recherche/", name="search")
      */
-    public function articlesearch(Request $request,PaginatorInterface $paginator): Response
+    public function articlesearch(Request $request, PaginatorInterface $paginator): Response
     {
-        $requestedPage = $request->query->getInt('page',1);
+        $requestedPage = $request->query->getInt('page', 1);
 
-        $research =  $request->query->get('searcharea');
-        if ($requestedPage< 1){
+        $research = $request->query->get('searcharea');
+        if ($requestedPage < 1) {
             throw new NotFoundHttpException();
         }
         $em = $this->getDoctrine()->getManager();
 
-        $query = $em->createQuery("SELECT a FROM App\Entity\Article a WHERE a.title LIKE :key OR a.content LIKE :key ORDER BY a.publicationDate DESC ")->setParameter('key','%'.$research.'%');
+        $query = $em->createQuery("SELECT a FROM App\Entity\Article a WHERE a.title LIKE :key OR a.content LIKE :key ORDER BY a.publicationDate DESC ")->setParameter('key', '%' . $research . '%');
         dump($query);
         $articleList = $paginator->paginate(
             $query,
@@ -129,9 +129,33 @@ class BlogController extends AbstractController
         );
 
 
-
-        return $this->render('blog/search.html.twig',[
-            'liste'=> $articleList
+        return $this->render('blog/search.html.twig', [
+            'liste' => $articleList
         ]);
+    }
+
+    /**
+     *
+     *
+     * @Route("/article/delete/{id}", name="articledelete")
+     */
+    public function articleDelete(Article $article, Request $request): Response
+    {
+        if (!$this->isCsrfTokenValid('article_delete_' . $article->getId(), $request->query->get('csrf_token'))){
+            $this->addFlash('error', 'token secu invalide reessayer');
+        }else{
+
+        $em = $this->getDoctrine()->getManager();
+
+        $em->remove($article);
+
+        $em->flush();
+
+        $this->addFlash('success', 'l\'article a bien etais surpprimé');
+
+        }
+        return $this->redirectToRoute('blog_article_list');
+
+
     }
 }
