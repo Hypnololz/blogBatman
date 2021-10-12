@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    liste des article
+{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">votre recherche {{ app.request.query.get('searcharea')}} contient {{ liste.getTotalItemCount }} articles</h1>
+    <div class="container">
+        {% if liste is not empty %}
+            <div class="row">
+                <div class="col-12 my-3 text-center">
+                    <div class="d-inline-block">
+                        {{ knp_pagination_render(liste) }}
+                    </div>
+                </div>
+            </div>
+
+        {% endif %}
+        {% for article in liste %}
+            <div class="row">
+                <div class="col-12 my-3">
+
+                    <div class="card">
+                        <div class="card-header bg-secondary text-black">
+                            {{ article.title }}
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-black text-white">{{ article.content|striptags|excerpt(20) }}
+                                <a href="{{path( 'blog_article',{'slug':article.slug} )}}">voir plus</a>
+                            </li>
+                            <li class="list-group-item bg-secondary text-black">ecrit par {{ article.user.pseudo }} le {{ article.publicationDate|date('d/m/Y à H\\hi') }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                <p>aucun article trouvée :(</p>
+            </div>
+        {% endfor %}
+    </div>
+    {% if liste is not empty %}
+        <div class="row">
+            <div class="col-12 my-3 text-center">
+                <div class="d-inline-block">
+                    {{ knp_pagination_render(liste) }}
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+
+
+
+{% endblock %}

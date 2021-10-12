@@ -104,4 +104,34 @@ class BlogController extends AbstractController
             'article' => $article,
         ]);
     }
+
+    /**
+     *
+     *
+     * @Route("/liste-des-article-recherche/", name="search")
+     */
+    public function articlesearch(Request $request,PaginatorInterface $paginator): Response
+    {
+        $requestedPage = $request->query->getInt('page',1);
+
+        $research =  $request->query->get('searcharea');
+        if ($requestedPage< 1){
+            throw new NotFoundHttpException();
+        }
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery("SELECT a FROM App\Entity\Article a WHERE a.title LIKE :key OR a.content LIKE :key ORDER BY a.publicationDate DESC ")->setParameter('key','%'.$research.'%');
+        dump($query);
+        $articleList = $paginator->paginate(
+            $query,
+            $requestedPage,
+            10
+        );
+
+
+
+        return $this->render('blog/search.html.twig',[
+            'liste'=> $articleList
+        ]);
+    }
 }
