@@ -9,7 +9,7 @@
 
         </div>
     <div class="row">
-        <p class="mt-5 col-12 col-md-6 mx-auto">{{ article.content|raw|purify}}</p>
+        <p class="mt-5 col-12 col-md-6 mx-auto">{{ article.content|purify}}</p>
         <p class="text-end">écrits le {{ article.publicationDate|date('d/m/Y à H\\hi')}} par {{ article.user.pseudo }}</p>
     </div>
 

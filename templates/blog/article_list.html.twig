@@ -15,7 +15,7 @@
                             {{ article.title }}
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-black text-white">{{ article.content|excerpt(20)|purify }}
+                            <li class="list-group-item bg-black text-white">{{ article.content|striptags|excerpt(20) }}
                                 <a href="{{path( 'blog_article',{'slug':article.slug} )}}">voir plus</a>
                             </li>
                             <li class="list-group-item bg-secondary text-black">ecrit par {{ article.user.pseudo }} le {{ article.publicationDate|date('d/m/Y à H\\hi') }}</li>
