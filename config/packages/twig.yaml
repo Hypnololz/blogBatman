@@ -1,6 +1,9 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes: ['bootstrap_5_layout.html.twig']
+    globals:
+        site_name: '%app.site_name%'
+        nbr_article: '%app.nbr_article%'
 
 when@test:
     twig:

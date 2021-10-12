@@ -17,8 +17,24 @@
     </div>
     <div class="batman-cover row my-5"></div>
 </div>
+    <h2 class="text-center">dernier article publiés</h2>
+    {% for article in articles %}
+    <div class="row mx-0">
+        <div class="col-8 my-3 mx-auto">
 
-
+            <div class="card">
+                <div class="card-header bg-secondary text-black">
+                    {{ article.title }}
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-black text-white">{{ article.content|excerpt(20)|purify }}
+                        <a href="{{path( 'blog_article',{'slug':article.slug} )}}">voir plus</a>
+                    </li>
+                    <li class="list-group-item bg-secondary text-black">ecrit par {{ article.user.pseudo }} le {{ article.publicationDate|date('d/m/Y à H\\hi') }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 {% endblock %}
-
 

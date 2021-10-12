@@ -19,7 +19,13 @@ class MainController extends AbstractController
      */
     public function home(): Response
     {
-        return $this->render('main/home.html.twig');
+        $articlerepo = $this->getDoctrine()->getRepository(Article::class);
+
+        $articles = $articlerepo->findBy([], ['publicationDate' => 'DESC'], $this->getParameter('app.nbr_article'));
+
+        return $this->render('main/home.html.twig',[
+            'articles' => $articles,
+        ]);
     }
     /**
      * controller de la page de profil
