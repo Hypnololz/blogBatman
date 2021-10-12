@@ -7,7 +7,6 @@ use App\Entity\Comment;
 use App\Form\CreateArticleFormType;
 use App\Form\CreateCommentFormType;
 use DateTime;
-use Doctrine\ORM\Mapping\Id;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

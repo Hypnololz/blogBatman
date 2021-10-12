@@ -6,6 +6,7 @@
 parameters:
     app.site_name: 'le Blog de Batman'
     app.nbr_article: 3
+    google_key.private_key: '%env(GOOGLE_RECAPTCHA_PRIVATE_KEY)%'
 
 services:
     # default configuration for services in *this* file

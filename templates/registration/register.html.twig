@@ -3,12 +3,26 @@
 {% block title %}inscription{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12 col-md-4 mx-auto">
-            <h1>Register</h1>
-            {{ form(registrationForm) }}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-md-4 mx-auto">
+                <h1>Register</h1>
+                {{ form_start(registrationForm) }}
+                {{ form_errors(registrationForm) }}
+                {{ form_row(registrationForm.pseudo) }}
+                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.plainPassword) }}
+                <div>
+                    <div class="g-recaptcha" data-sitekey="{{ api_recaptcha_key }}"></div>
+                </div>
+                {{ form_end(registrationForm) }}
+
+            </div>
         </div>
     </div>
-</div>
+
+{% endblock %}
+
+{% block css %}
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 {% endblock %}
