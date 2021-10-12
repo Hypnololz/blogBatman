@@ -7,10 +7,12 @@ use App\Entity\Comment;
 use App\Form\CreateArticleFormType;
 use App\Form\CreateCommentFormType;
 use DateTime;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -50,11 +52,23 @@ class BlogController extends AbstractController
      *
      * @Route("/liste-des-article/", name="article_list")
      */
-    public function articleList(): Response
+    public function articleList(Request $request, PaginatorInterface $paginator): Response
     {
+        $requestedPage = $request->query->getInt('page',1);
 
-        $articleRepository = $this->getDoctrine()->getRepository(Article::class);
-        $articleList = $articleRepository->findAll();
+        if ($requestedPage< 1){
+            throw new NotFoundHttpException();
+        }
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery('SELECT a FROM App\Entity\Article a ORDER BY a.publicationDate DESC ');
+
+        $articleList = $paginator->paginate(
+            $query,
+            $requestedPage,
+            10
+        );
+
         return $this->render('blog/article_list.html.twig',[
             'liste'=> $articleList
         ]);

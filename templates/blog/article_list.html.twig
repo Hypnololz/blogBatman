@@ -4,8 +4,18 @@
 {% endblock %}
 
 {% block body %}
-    <h1 class="text-center">liste des Article!</h1>
+    <h1 class="text-center">liste des Article! {{ liste.getTotalItemCount }} articles</h1>
     <div class="container">
+        {% if liste is not empty %}
+            <div class="row">
+                <div class="col-12 my-3 text-center">
+                    <div class="d-inline-block">
+                        {{ knp_pagination_render(liste) }}
+                    </div>
+                </div>
+            </div>
+
+        {% endif %}
             {% for article in liste %}
         <div class="row">
                 <div class="col-12 my-3">
@@ -29,6 +39,16 @@
                 </div>
             {% endfor %}
     </div>
+    {% if liste is not empty %}
+        <div class="row">
+            <div class="col-12 my-3 text-center">
+                <div class="d-inline-block">
+                    {{ knp_pagination_render(liste) }}
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
 
 
 
