@@ -38,8 +38,6 @@
                                        href="{{ path('blog_articledelete', {'id': article.id, 'csrf_token' : csrf_token('article_delete_'~article.id)}) }}">suprimer</a>
                                     <a class="text-decoration-none"
                                        href="{{ path('blog_article_edit', {'id': article.id}) }}">editer</a>
-
-
                                 </li>
 
                             {% endif %}
