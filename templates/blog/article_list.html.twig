@@ -4,8 +4,8 @@
 {% endblock %}
 
 {% block body %}
-    <h1 class="text-center">liste des Article! {{ liste.getTotalItemCount }} articles</h1>
     <div class="container">
+        <h1 class="text-center">liste des Article! {{ liste.getTotalItemCount }} articles</h1>
         {% if liste is not empty %}
             <div class="row">
                 <div class="col-12 my-3 text-center">
@@ -29,7 +29,8 @@
                                 <a href="{{ path( 'blog_article',{'slug':article.slug} ) }}">voir plus</a>
                             </li>
                             <li class="list-group-item bg-secondary text-black">ecrit par {{ article.user.pseudo }}
-                                le {{ article.publicationDate|date('d/m/Y à H\\hi') }}</li>
+                                le {{ article.publicationDate|date('d/m/Y à H\\hi') }}
+                            </li>
                             {% if is_granted('ROLE_ADMIN') %}
                                 <li class="list-group-item bg-black text-white">
 
@@ -50,17 +51,17 @@
                 <p>aucun article ajouté</p>
             </div>
         {% endfor %}
-    </div>
-    {% if liste is not empty %}
-        <div class="row">
-            <div class="col-12 my-3 text-center">
-                <div class="d-inline-block">
-                    {{ knp_pagination_render(liste) }}
+        {% if liste is not empty %}
+            <div class="row">
+                <div class="col-12 my-3 text-center">
+                    <div class="d-inline-block">
+                        {{ knp_pagination_render(liste) }}
+                    </div>
                 </div>
             </div>
-        </div>
 
-    {% endif %}
+        {% endif %}
+    </div>
 
 
 
