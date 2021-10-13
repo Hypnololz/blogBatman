@@ -141,20 +141,50 @@ class BlogController extends AbstractController
      */
     public function articleDelete(Article $article, Request $request): Response
     {
-        if (!$this->isCsrfTokenValid('article_delete_' . $article->getId(), $request->query->get('csrf_token'))){
+        if (!$this->isCsrfTokenValid('article_delete_' . $article->getId(), $request->query->get('csrf_token'))) {
             $this->addFlash('error', 'token secu invalide reessayer');
-        }else{
+        } else {
 
-        $em = $this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();
 
-        $em->remove($article);
+            $em->remove($article);
 
-        $em->flush();
+            $em->flush();
 
-        $this->addFlash('success', 'l\'article a bien etais surpprimé');
+            $this->addFlash('success', 'l\'article a bien etais surpprimé');
 
         }
         return $this->redirectToRoute('blog_article_list');
+
+
+    }
+
+    /**
+     * @Route("/article/modifier/{id}", name="article_edit")
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function articleEdit(Article $article, Request $request): Response
+    {
+        $form = $this->createForm(CreateArticleFormType::class, $article);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->addFlash('success', 'publication modifiée avec succés');
+
+            return $this->redirectToRoute('blog_article', [
+                'slug' => $article->getSlug()
+            ]);
+        }
+
+
+        return $this->render('blog/article/modification.html.twig', [
+            'form' => $form->createView(),
+        ]);
 
 
     }

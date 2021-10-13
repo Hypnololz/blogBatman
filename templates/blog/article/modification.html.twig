@@ -1,0 +1,24 @@
+{% extends('base.html.twig') %}
+ {% block title %}modification d'un article{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <h1 class="col-12 text-center my-5">modifier un article</h1>
+        </div>
+    </div>
+    <div class="row">
+        <p class="text-center col-12">
+            <a href="{{ path('blog_article', {'slug': form.vars.value.slug}) }}" class="text-decoration-none">revenir a l'article</a>
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-8 offset-md-2">
+            {{ form_start(form) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.content) }}
+            {{ form_row(form.save, {'label': 'modifier'}) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

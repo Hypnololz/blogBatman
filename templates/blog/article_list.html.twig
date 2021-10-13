@@ -31,9 +31,16 @@
                             <li class="list-group-item bg-secondary text-black">ecrit par {{ article.user.pseudo }}
                                 le {{ article.publicationDate|date('d/m/Y à H\\hi') }}</li>
                             {% if is_granted('ROLE_ADMIN') %}
-                                <p class="mb-0 mt-3 bg-black">
-                                    <a class="text-decoration-none" href="{{ path('blog_articledelete', {'id': article.id, 'csrf_token' : csrf_token('article_delete_'~article.id)}) }}">suprimer</a>
-                                </p>
+                                <li class="list-group-item bg-black text-white">
+
+                                    <a onclick="return confirm('Êtes vous sur de vouloir supprimer cette article ?')"
+                                       class="text-decoration-none"
+                                       href="{{ path('blog_articledelete', {'id': article.id, 'csrf_token' : csrf_token('article_delete_'~article.id)}) }}">suprimer</a>
+                                    <a class="text-decoration-none"
+                                       href="{{ path('blog_article_edit', {'id': article.id}) }}">editer</a>
+
+
+                                </li>
 
                             {% endif %}
                         </ul>
