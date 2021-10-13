@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Article;
+use App\Entity\Comment;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -48,17 +49,18 @@ class AppFixtures extends Fixture
             ;
             $manager->persist($user);
         }
-        for ($i = 0; $i < 2000; $i++){
+        for ($i = 0; $i < 2000; $i++) {
             $article = new Article();
             $article
                 ->setTitle($faker->sentence('10'))
-                ->setPublicationDate( $faker->dateTimeBetween('-1 year','now'))
+                ->setPublicationDate($faker->dateTimeBetween('-1 year', 'now'))
                 ->setContent($faker->paragraph(15))
-                ->setUser($admin)
-            ;
+                ->setUser($admin);
             $manager->persist($article);
         }
 
         $manager->flush();
+
     }
 }
+

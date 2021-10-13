@@ -37,7 +37,7 @@ class MainController extends AbstractController
      */
     public function profile(): Response
     {
-
+        
         return $this->render('main/profil.html.twig');
     }
     /**

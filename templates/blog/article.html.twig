@@ -8,16 +8,28 @@
             <div class="mx-auto col-12 col-md-6"><h1>{{ article.title }}</h1></div>
 
         </div>
-    <div class="row">
-        <p class="mt-5 col-12 col-md-6 mx-auto">{{ article.content|purify}}</p>
-        <p class="text-end">écrits le {{ article.publicationDate|date('d/m/Y à H\\hi')}} par {{ article.user.pseudo }}</p>
-    </div>
+        <div class="row">
+            <p class="mt-5 col-12 col-md-6 mx-auto">{{ article.content|purify }}</p>
+            <p class="text-end">écrits le {{ article.publicationDate|date('d/m/Y à H\\hi') }}
+                par {{ article.user.pseudo }}</p>
+        </div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="text-center">
+                <a onclick="return confirm('Êtes vous sur de vouloir supprimer cette article ?')"
+                   class="text-decoration-none text-center"
+                   href="{{ path('blog_articledelete', {'id': article.id, 'csrf_token' : csrf_token('article_delete_'~article.id)}) }}">suprimer</a>
+                <a class="text-decoration-none text-center"
+                   href="{{ path('blog_article_edit', {'id': article.id}) }}">editer</a>
+            </div>
+
+        {% endif %}
 
 
-    <h2 class="text-center">commentaire!</h2>
-        {% if is_granted('ROLE_USER') %}
-
-        {{ form(form)}}
+        <h2 class="text-center">commentaire!</h2>
+        {% if app.user %}
+            {{ form(form) }}
+        {% else %}
+            <p class="text-center text-info"><a class="text-center text-info" href="{{ path('app_login') }}">connectez vous pour ecrire un commentaire</a></p>
         {% endif %}
         <div class="row">
             {% for comment in article.comments|sort((a, b) => b.id <=> a.id) %}
@@ -30,23 +42,14 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item bg-black text-white">{{ comment.content }}
                             </li>
-                            <li class="list-group-item bg-secondary text-black">le {{ comment.publicationDate|date('d/m/Y à H\\hi') }}</li>
+                            <li class="list-group-item bg-secondary text-black">
+                                le {{ comment.publicationDate|date('d/m/Y à H\\hi') }}</li>
                         </ul>
                     </div>
                 </div>
             {% endfor %}
         </div>
     </div>
-    {% if is_granted('ROLE_ADMIN') %}
-        <div class="text-center">
-            <a onclick="return confirm('Êtes vous sur de vouloir supprimer cette article ?')"
-               class="text-decoration-none text-center"
-               href="{{ path('blog_articledelete', {'id': article.id, 'csrf_token' : csrf_token('article_delete_'~article.id)}) }}">suprimer</a>
-            <a class="text-decoration-none text-center"
-               href="{{ path('blog_article_edit', {'id': article.id}) }}">editer</a>
-        </div>
-
-    {% endif %}
 {% endblock %}
 
 

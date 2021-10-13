@@ -28,6 +28,7 @@ class BlogController extends AbstractController
      */
     public function articleCreation(Request $request): Response
     {
+
         $newArticle = new Article();
         $form = $this->createForm(CreateArticleFormType::class, $newArticle);
         $form->handleRequest($request);
@@ -48,7 +49,6 @@ class BlogController extends AbstractController
     }
 
     /**
-     * controller de la page de creation d'article
      *
      * @Route("/liste-des-article/", name="article_list")
      */
@@ -81,14 +81,20 @@ class BlogController extends AbstractController
      */
     public function article(Article $article, Request $request): Response
     {
+        if (!$this->getUser()) {
+            return $this->render('blog/article.html.twig',[
+                'article' => $article,
+            ]);
+        }
+
         $newComment = new Comment();
-        $newComment->setUser($this->getUser());
-        $newComment->setPublicationDate(new \DateTime());
-        $newComment->setArticle($article);
 
         $form = $this->createForm(CreateCommentFormType::class, $newComment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $newComment->setUser($this->getUser());
+            $newComment->setPublicationDate(new \DateTime());
+            $newComment->setArticle($article);
             $em = $this->getDoctrine()->getManager();
             $em->persist($newComment);
             $em->flush();
