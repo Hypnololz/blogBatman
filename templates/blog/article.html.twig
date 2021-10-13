@@ -43,7 +43,13 @@
                             <li class="list-group-item bg-black text-white">{{ comment.content }}
                             </li>
                             <li class="list-group-item bg-secondary text-black">
-                                le {{ comment.publicationDate|date('d/m/Y à H\\hi') }}</li>
+                                le {{ comment.publicationDate|date('d/m/Y à H\\hi') }}
+                                {% if is_granted('ROLE_ADMIN') %}
+                <a onclick="return confirm('Êtes vous sur de vouloir supprimer ce commentaire ?')"
+                   class="text-center text-danger"
+                   href="{{ path('blog_commentdelete', {'id': comment.id, 'csrf_token' : csrf_token('comment_delete_'~comment.id)}) }}">suprimer</a>
+                            </li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>

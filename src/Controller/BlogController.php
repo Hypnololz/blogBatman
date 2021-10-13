@@ -164,6 +164,34 @@ class BlogController extends AbstractController
 
 
     }
+    /**
+     *
+     * @Route("/commentaire/delete/{id}", name="commentdelete")
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function commentDelete(Comment $comment, Request $request): Response
+    {
+        if (!$this->isCsrfTokenValid('comment_delete_' . $comment->getId(), $request->query->get('csrf_token'))) {
+            $this->addFlash('error', 'token secu invalide reessayer');
+        } else {
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->remove($comment);
+
+            $em->flush();
+
+            $this->addFlash('success', 'le commentaire a bien etais surpprimé');
+
+        }
+        return $this->redirectToRoute('blog_article',[
+
+            'slug' => $comment->getArticle()->getSlug(),
+
+        ]);
+
+
+    }
 
     /**
      * @Route("/article/modifier/{id}", name="article_edit")
